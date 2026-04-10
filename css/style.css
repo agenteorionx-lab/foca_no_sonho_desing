@@ -162,25 +162,34 @@ body::after {
     flex-direction: column;
 }
 
-/* Classes de Cores Alternadas (Efeito Soft & Clean - Estilo Referência) */
+/* Classes de Cores Alternadas (Efeito Névoa/Gradiente Suave) */
 .card-info {
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-top: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(4px); /* Blur reduzido para ser mais suave */
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
 }
 
-/* Roxo Suave (Lavender) conforme imagem */
-.bg-purple .card-info { background-color: rgba(197, 128, 255, 0.95); }
+/* Roxo Suave (Lavender) conforme imagem com gradiente suave */
+.bg-purple .card-info { 
+    background: linear-gradient(to bottom, transparent 0%, rgba(197, 128, 255, 0.4) 30%, rgba(197, 128, 255, 0.95) 100%); 
+}
 .bg-purple .card-info h3 { color: #FFFFFF; }
 .bg-purple .card-info p { color: #00FF66 !important; font-weight: 700; }
 
-/* Preto Profundo */
-.bg-black .card-info { background-color: rgba(15, 15, 15, 0.95); }
+/* Preto com gradiente suave */
+.bg-black .card-info { 
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.4) 30%, rgba(0, 0, 0, 0.95) 100%); 
+}
 .bg-black .card-info h3 { color: #FFFFFF; }
 .bg-black .card-info p { color: #00FF66 !important; font-weight: 700; }
 
-/* Verde Suave */
-.bg-green .card-info { background-color: rgba(0, 255, 102, 0.95); }
+/* Verde com gradiente suave */
+.bg-green .card-info { 
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 255, 102, 0.4) 30%, rgba(0, 255, 102, 0.95) 100%); 
+}
 .bg-green .card-info h3 { color: #000000; }
 .bg-green .card-info p { color: #FFFFFF !important; font-weight: 700; }
 
@@ -211,11 +220,12 @@ body::after {
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 1.2rem;
+    height: 50%; /* Gradiente começa da metade para baixo */
+    padding: 1.5rem;
     z-index: 2;
-    transform: translateY(100%); /* Escondido abaixo no Desktop */
+    transform: translateY(100%);
     opacity: 0;
-    transition: all 0.4s ease;
+    transition: all 0.5s ease;
     text-align: left;
 }
 
@@ -382,25 +392,33 @@ body::after {
         grid-template-columns: 1fr 1fr;
     }
     
-    /* Layout Mobile do Card conforme referência */
+    /* Layout Mobile com Efeito Filtro Suave */
     .card-info {
-        position: relative;
-        transform: translateY(0) !important;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 45%; /* Filtro da metade para baixo */
         opacity: 1 !important;
-        padding: 1.2rem 1.5rem;
-        min-height: 90px;
-        backdrop-filter: none; /* No mobile simplificamos para cor sólida soft */
+        transform: translateY(0) !important;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
     }
     
     .project-card {
         height: auto;
-        aspect-ratio: auto;
-        border-radius: 25px; /* Bordas ainda mais suaves no celular */
+        aspect-ratio: 4/5;
+        border-radius: 25px;
     }
     
     .project-card img {
-        height: 280px; 
-        object-fit: cover;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        inset: 0;
+        z-index: 1;
     }
 
     .modal-close {
