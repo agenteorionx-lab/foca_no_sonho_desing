@@ -162,24 +162,33 @@ body::after {
     flex-direction: column;
 }
 
-/* Classes de Cores Alternadas (Efeito Glass/Menos Denso) */
+/* Classes de Cores Alternadas (Efeito Soft & Clean - Estilo Referência) */
 .card-info {
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-top: 1px solid rgba(255,255,255,0.1);
 }
 
-.bg-purple .card-info { background-color: rgba(157, 0, 255, 0.65); }
-.bg-black .card-info { background-color: rgba(0, 0, 0, 0.7); }
-.bg-green .card-info { background-color: rgba(0, 255, 102, 0.65); }
+/* Roxo Suave (Lavender) conforme imagem */
+.bg-purple .card-info { background-color: rgba(197, 128, 255, 0.95); }
+.bg-purple .card-info h3 { color: #FFFFFF; }
+.bg-purple .card-info p { color: #00FF66 !important; font-weight: 700; }
 
-/* Ajuste de Texto para a cor Verde (melhor contraste com texto escuro) */
-.bg-green .card-info h3 { color: #0a0a0a; }
-.bg-green .card-info p { color: rgba(0,0,0,0.8) !important; }
+/* Preto Profundo */
+.bg-black .card-info { background-color: rgba(15, 15, 15, 0.95); }
+.bg-black .card-info h3 { color: #FFFFFF; }
+.bg-black .card-info p { color: #00FF66 !important; font-weight: 700; }
 
-/* Fallback de cor para bordas baseadas na classe */
-.bg-purple:hover { border-color: #9D00FF !important; }
-.bg-black:hover { border-color: #FFFFFF !important; }
-.bg-green:hover { border-color: #00FF66 !important; }
+/* Verde Suave */
+.bg-green .card-info { background-color: rgba(0, 255, 102, 0.95); }
+.bg-green .card-info h3 { color: #000000; }
+.bg-green .card-info p { color: #FFFFFF !important; font-weight: 700; }
+
+/* Borda Verde característica da referência */
+.project-card {
+    border: 2px solid #00FF66 !important;
+    box-shadow: 0 10px 30px rgba(0, 255, 102, 0.1);
+}
 
 .project-card img {
     width: 100%;
@@ -212,17 +221,15 @@ body::after {
 
 .card-info h3 {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: 0rem;
-    color: #fff;
+    font-size: 1.5rem; /* Um pouco maior */
+    font-weight: 800; /* Mais negrito */
+    margin-bottom: 0.2rem;
 }
 
 .card-info p {
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.8);
-    font-weight: 400;
-    margin: 0;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .project-card:hover {
@@ -377,21 +384,22 @@ body::after {
     
     /* Layout Mobile do Card conforme referência */
     .card-info {
-        position: relative; /* Sai do absolute para ocupar espaço fixo */
+        position: relative;
         transform: translateY(0) !important;
         opacity: 1 !important;
-        padding: 1rem 1.2rem;
-        min-height: 80px;
+        padding: 1.2rem 1.5rem;
+        min-height: 90px;
+        backdrop-filter: none; /* No mobile simplificamos para cor sólida soft */
     }
     
     .project-card {
         height: auto;
-        aspect-ratio: auto; /* Deixa o card crescer com o conteúdo */
+        aspect-ratio: auto;
+        border-radius: 25px; /* Bordas ainda mais suaves no celular */
     }
     
     .project-card img {
-        height: 250px; /* Altura fixa para a imagem no mobile */
-        aspect-ratio: 1/1;
+        height: 280px; 
         object-fit: cover;
     }
 
