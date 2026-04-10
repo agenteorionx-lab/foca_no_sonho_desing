@@ -162,33 +162,32 @@ body::after {
     flex-direction: column;
 }
 
-/* Classes de Cores Alternadas (Efeito Névoa/Gradiente Suave) */
+/* Classes de Cores Alternadas (Filtro de Cor em Degradê) */
 .card-info {
-    backdrop-filter: blur(4px); /* Blur reduzido para ser mais suave */
-    -webkit-backdrop-filter: blur(4px);
+    /* Removido Backdrop Filter para transparência cristalina */
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     overflow: hidden;
 }
 
-/* Roxo Suave (Lavender) conforme imagem com gradiente suave */
+/* Roxo Suave conforme imagem (Sem Blur, Apenas Tom de Cor) */
 .bg-purple .card-info { 
-    background: linear-gradient(to bottom, transparent 0%, rgba(197, 128, 255, 0.4) 30%, rgba(197, 128, 255, 0.95) 100%); 
+    background: linear-gradient(to bottom, transparent 0%, rgba(197, 128, 255, 0.4) 50%, rgba(197, 128, 255, 0.8) 100%); 
 }
 .bg-purple .card-info h3 { color: #FFFFFF; }
 .bg-purple .card-info p { color: #00FF66 !important; font-weight: 700; }
 
-/* Preto com gradiente suave */
+/* Preto com tom de cor suave */
 .bg-black .card-info { 
-    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.4) 30%, rgba(0, 0, 0, 0.95) 100%); 
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.8) 100%); 
 }
 .bg-black .card-info h3 { color: #FFFFFF; }
 .bg-black .card-info p { color: #00FF66 !important; font-weight: 700; }
 
-/* Verde com gradiente suave */
+/* Verde com tom de cor suave */
 .bg-green .card-info { 
-    background: linear-gradient(to bottom, transparent 0%, rgba(0, 255, 102, 0.4) 30%, rgba(0, 255, 102, 0.95) 100%); 
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 255, 102, 0.4) 50%, rgba(0, 255, 102, 0.8) 100%); 
 }
 .bg-green .card-info h3 { color: #000000; }
 .bg-green .card-info p { color: #FFFFFF !important; font-weight: 700; }
@@ -392,13 +391,13 @@ body::after {
         grid-template-columns: 1fr 1fr;
     }
     
-    /* Layout Mobile com Efeito Filtro Suave */
+    /* Layout Mobile com Filtro Cristalino */
     .card-info {
         position: absolute;
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 45%; /* Filtro da metade para baixo */
+        height: 45%; 
         opacity: 1 !important;
         transform: translateY(0) !important;
         padding: 1.5rem;
