@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Pro Max</title>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Header Glassmorphism -->
+    <header class="header">
+        <div class="logo">
+            <img src="imagens/focanosonhologo_branco.png" alt="Foca no Sonho Logo" class="brand-logo">
+        </div>
+
+        <div class="search-bar">
+            <span class="material-symbols-outlined search-icon">search</span>
+            <input type="text" id="searchInput" placeholder="Pesquisar projetos, estilos...">
+        </div>
+
+        <div class="nav-toggle">
+            <button class="nav-btn active" data-category="mascote">Mascotes</button>
+            <button class="nav-btn" data-category="identidade">Identidade Visual</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Renderização dinâmica dos cards via JS -->
+        <div class="grid-container" id="gridContainer">
+            <!-- Cards entrarão aqui -->
+        </div>
+        
+        <!-- Estado de "Nenhum resultado" vazio -->
+        <div id="emptyState" class="empty-state hidden">
+            <span class="material-symbols-outlined">sentiment_dissatisfied</span>
+            <p>Nenhum projeto encontrado para essa pesquisa.</p>
+        </div>
+    </main>
+
+    <!-- Modal Slider (Popup) -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-container">
+            <button class="modal-close" id="modalClose">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modalTitle">Nome do Projeto</h2>
+                    <p id="modalCategory">Categoria</p>
+                </div>
+
+                <!-- Swiper -->
+                <div class="swiper mySwiper">
+                    <div class="swiper-wrapper" id="swiperWrapper">
+                        <!-- Slides serão inseridos aqui -->
+                    </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
