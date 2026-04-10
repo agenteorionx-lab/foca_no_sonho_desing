@@ -151,14 +151,30 @@ body::after {
 
 .project-card {
     position: relative;
-    border-radius: 16px;
+    border-radius: 20px; /* Bordas mais arredondadas como na referência */
     overflow: hidden;
     cursor: pointer;
     background: var(--bg-glass-card);
-    border: 1px solid var(--border-color);
+    border: 2px solid var(--border-color); /* Borda um pouco mais visível */
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     aspect-ratio: 4/5;
+    display: flex;
+    flex-direction: column;
 }
+
+/* Classes de Cores Alternadas */
+.bg-purple .card-info { background-color: #9D00FF; }
+.bg-black .card-info { background-color: #000000; }
+.bg-green .card-info { background-color: #00FF66; }
+
+/* Ajuste de Texto para a cor Verde (melhor contraste com texto escuro) */
+.bg-green .card-info h3 { color: #000; }
+.bg-green .card-info p { color: rgba(0,0,0,0.7) !important; }
+
+/* Fallback de cor para bordas baseadas na classe */
+.bg-purple:hover { border-color: #9D00FF !important; }
+.bg-black:hover { border-color: #FFFFFF !important; }
+.bg-green:hover { border-color: #00FF66 !important; }
 
 .project-card img {
     width: 100%;
@@ -181,38 +197,35 @@ body::after {
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 1.5rem;
+    padding: 1.2rem;
     z-index: 2;
-    transform: translateY(20px);
+    transform: translateY(100%); /* Escondido abaixo no Desktop */
     opacity: 0;
     transition: all 0.4s ease;
+    text-align: left;
 }
 
 .card-info h3 {
     font-family: 'Outfit', sans-serif;
     font-size: 1.4rem;
-    margin-bottom: 0.3rem;
+    font-weight: 700;
+    margin-bottom: 0rem;
+    color: #fff;
 }
 
 .card-info p {
     font-size: 0.9rem;
-    color: var(--primary-green);
-    font-weight: 600;
+    color: rgba(255,255,255,0.8);
+    font-weight: 400;
+    margin: 0;
 }
 
 .project-card:hover {
     transform: translateY(-10px);
-    border-color: var(--primary-green);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.5), 0 0 20px var(--accent-purple-glow);
 }
 
 .project-card:hover img {
     transform: scale(1.05);
-}
-
-.project-card:hover::after {
-    opacity: 0.9;
-    background: linear-gradient(to top, rgba(157, 0, 255, 0.6) 0%, transparent 60%);
 }
 
 .project-card:hover .card-info {
@@ -356,6 +369,27 @@ body::after {
         display: grid;
         grid-template-columns: 1fr 1fr;
     }
+    
+    /* Layout Mobile do Card conforme referência */
+    .card-info {
+        position: relative; /* Sai do absolute para ocupar espaço fixo */
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+        padding: 1rem 1.2rem;
+        min-height: 80px;
+    }
+    
+    .project-card {
+        height: auto;
+        aspect-ratio: auto; /* Deixa o card crescer com o conteúdo */
+    }
+    
+    .project-card img {
+        height: 250px; /* Altura fixa para a imagem no mobile */
+        aspect-ratio: 1/1;
+        object-fit: cover;
+    }
+
     .modal-close {
         top: 1rem;
         right: 1rem;

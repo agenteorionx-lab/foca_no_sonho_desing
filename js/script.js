@@ -57,14 +57,19 @@ document.addEventListener('DOMContentLoaded', () => {
             emptyState.classList.add('hidden');
             
             // Gerar HTML dos cards
-            filteredProjects.forEach(project => {
+            filteredProjects.forEach((project, index) => {
                 const card = document.createElement('div');
-                card.className = 'project-card';
+                
+                // Lógica de alternância de cores (Roxo, Preto e Verde)
+                const colorClasses = ['bg-purple', 'bg-black', 'bg-green'];
+                const colorClass = colorClasses[index % 3];
+                
+                card.className = `project-card ${colorClass}`;
                 card.innerHTML = `
                     <img src="${project.cover}" alt="${project.title}" loading="lazy">
                     <div class="card-info">
                         <h3>${project.title}</h3>
-                        <p>${project.subcategory}</p>
+                        <p class="project-category">${project.subcategory}</p>
                     </div>
                 `;
                 
