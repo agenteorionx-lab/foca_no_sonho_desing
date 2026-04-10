@@ -162,14 +162,19 @@ body::after {
     flex-direction: column;
 }
 
-/* Classes de Cores Alternadas */
-.bg-purple .card-info { background-color: #9D00FF; }
-.bg-black .card-info { background-color: #000000; }
-.bg-green .card-info { background-color: #00FF66; }
+/* Classes de Cores Alternadas (Efeito Glass/Menos Denso) */
+.card-info {
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+
+.bg-purple .card-info { background-color: rgba(157, 0, 255, 0.65); }
+.bg-black .card-info { background-color: rgba(0, 0, 0, 0.7); }
+.bg-green .card-info { background-color: rgba(0, 255, 102, 0.65); }
 
 /* Ajuste de Texto para a cor Verde (melhor contraste com texto escuro) */
-.bg-green .card-info h3 { color: #000; }
-.bg-green .card-info p { color: rgba(0,0,0,0.7) !important; }
+.bg-green .card-info h3 { color: #0a0a0a; }
+.bg-green .card-info p { color: rgba(0,0,0,0.8) !important; }
 
 /* Fallback de cor para bordas baseadas na classe */
 .bg-purple:hover { border-color: #9D00FF !important; }
