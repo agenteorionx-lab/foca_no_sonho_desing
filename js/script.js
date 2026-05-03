@@ -1,9 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Variáveis Globais
     const allCategories = [...new Set(projectsData.map(p => p.category))].sort();
-    let currentCategory = 'all'; // Iniciar mostrando tudo por padrão
+    let currentCategory = 'all'; 
     let currentSearch = '';
     let swiperInstance = null;
+    
+    // Variáveis para Infinite Scroll
+    let displayedProjectsCount = 20;
+    const projectsPerLoad = 20;
+    let filteredProjects = [];
 
     // Elementos do DOM
     const gridContainer = document.getElementById('gridContainer');
@@ -128,14 +133,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Renderizar Grid
     function renderGrid() {
         gridContainer.innerHTML = '';
+        displayedProjectsCount = projectsPerLoad;
         
-        const filteredProjects = projectsData.filter(project => {
+        filteredProjects = projectsData.filter(project => {
             const matchCategory = currentCategory === 'all' || project.category === currentCategory;
             
             const matchSearch = currentSearch === '' || 
                                 project.title.toLowerCase().includes(currentSearch) || 
                                 project.subcategory.toLowerCase().includes(currentSearch) ||
-                                (project.tags && project.tags.some(tag => tag.includes(currentSearch)));
+                                (project.tags && project.tags.some(tag => tag.includes(currentSearch.toLowerCase())));
             
             return matchCategory && matchSearch;
         });
@@ -144,67 +150,64 @@ document.addEventListener('DOMContentLoaded', () => {
             emptyState.classList.remove('hidden');
         } else {
             emptyState.classList.add('hidden');
-            
-            filteredProjects.forEach((project, index) => {
-                const card = document.createElement('div');
-                card.className = `project-card`;
-                
-                // Aplicar cor da categoria via CSS Variable
-                const catColor = getCategoryColor(project.subcategory || project.category);
-                card.style.setProperty('--category-color', catColor);
-                
-                // Só mostrar a subcategoria se não for "1coringas"
-                const categoryHtml = project.subcategory.toLowerCase().includes('coringas') 
-                    ? '' 
-                    : `<p class="project-category" style="color: var(--category-color); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin-top: 0.2rem;">${project.subcategory}</p>`;
-
-                card.innerHTML = `
-                    <div class="card-image-container">
-                        <img src="${project.cover}" alt="${project.title}" loading="lazy">
-                    </div>
-                    <div class="card-info">
-                        <h3>${project.title}</h3>
-                        ${categoryHtml}
-                    </div>
-                `;
-                
-                card.addEventListener('click', () => openModal(project));
-                gridContainer.appendChild(card);
-            });
+            renderProjectBatch();
         }
     }
 
-    // 4. Lógica do Modal e Swiper
+    function renderProjectBatch() {
+        const batch = filteredProjects.slice(gridContainer.children.length, gridContainer.children.length + projectsPerLoad);
+        
+        batch.forEach((project) => {
+            const card = document.createElement('div');
+            card.className = `project-card`;
+            
+            const catColor = getCategoryColor(project.subcategory || project.category);
+            card.style.setProperty('--category-color', catColor);
+            
+            const categoryHtml = project.subcategory.toLowerCase().includes('coringas') 
+                ? '' 
+                : `<p class="project-category" style="color: var(--category-color); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin-top: 0.2rem;">${project.subcategory}</p>`;
+
+            card.innerHTML = `
+                <div class="card-image-container">
+                    <img src="${project.cover}" alt="${project.title}" loading="lazy">
+                </div>
+                <div class="card-info">
+                    <h3>${project.title}</h3>
+                    ${categoryHtml}
+                </div>
+            `;
+            
+            card.addEventListener('click', () => openModal(project));
+            gridContainer.appendChild(card);
+        });
+    }
+
+    // Scroll Infinito
+    window.addEventListener('scroll', () => {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+            if (gridContainer.children.length < filteredProjects.length) {
+                renderProjectBatch();
+            }
+        }
+    });
+
+    // 4. Lógica do Modal e Swiper Otimizada
     function openModal(project) {
         modalTitle.textContent = project.title;
         modalCategory.textContent = project.subcategory;
         
         swiperWrapper.innerHTML = '';
-        project.slides.forEach(slideUrl => {
+        project.slides.forEach((slideUrl, index) => {
             const slide = document.createElement('div');
             slide.className = 'swiper-slide';
+            slide.dataset.src = slideUrl; // Armazena a URL para carregar depois
             
-            const canvasContainer = document.createElement('div');
-            canvasContainer.className = 'canvas-wrapper protected-content';
-            
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            const img = new Image();
-            
-            img.onload = () => {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
-            };
-            img.src = slideUrl;
+            const loader = document.createElement('div');
+            loader.className = 'slide-loader';
+            loader.innerHTML = '<div class="spinner"></div>';
+            slide.appendChild(loader);
 
-            canvasContainer.appendChild(canvas);
-            
-            const overlay = document.createElement('div');
-            overlay.className = 'protection-overlay';
-            canvasContainer.appendChild(overlay);
-
-            slide.appendChild(canvasContainer);
             swiperWrapper.appendChild(slide);
         });
 
@@ -215,8 +218,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (isMobile) {
             modalOverlay.classList.add('mobile-vertical-view');
+            // Carregar todos os slides no mobile (pois não há eventos de swiper)
+            // Mas de forma sequencial para não travar
+            loadMobileSlides();
             
-            // Adicionar aviso de rotação
             const hint = document.createElement('div');
             hint.className = 'rotation-hint';
             hint.innerHTML = '<span class="material-symbols-outlined">screen_rotation</span> Gire para ver melhor';
@@ -224,31 +229,76 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => hint.remove(), 5000);
         } else {
             modalOverlay.classList.remove('mobile-vertical-view');
-        }
+            
+            if (swiperInstance) {
+                swiperInstance.destroy(true, true);
+            }
 
-        if (swiperInstance) {
-            swiperInstance.destroy(true, true);
-        }
-
-        if (!isMobile) {
             swiperInstance = new Swiper('.mySwiper', {
                 loop: false,
-                keyboard: {
-                    enabled: true,
-                },
+                keyboard: { enabled: true },
                 pagination: {
                     el: '.swiper-pagination',
-                    type: 'fraction', // Números (ex: 1 / 5)
+                    type: 'fraction',
                 },
                 navigation: {
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev',
                 },
                 effect: 'fade',
-                fadeEffect: {
-                    crossFade: true
+                fadeEffect: { crossFade: true },
+                on: {
+                    init: function () {
+                        loadSlideCanvas(this.activeIndex);
+                        loadSlideCanvas(this.activeIndex + 1);
+                    },
+                    slideChange: function () {
+                        loadSlideCanvas(this.activeIndex);
+                        loadSlideCanvas(this.activeIndex + 1);
+                        loadSlideCanvas(this.activeIndex - 1);
+                    }
                 }
             });
+        }
+    }
+
+    function loadSlideCanvas(index) {
+        const slides = swiperWrapper.querySelectorAll('.swiper-slide');
+        if (index < 0 || index >= slides.length) return;
+        
+        const slide = slides[index];
+        if (slide.querySelector('canvas')) return; // Já carregado
+
+        const slideUrl = slide.dataset.src;
+        const canvasContainer = document.createElement('div');
+        canvasContainer.className = 'canvas-wrapper protected-content';
+        
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        
+        img.onload = () => {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            slide.querySelector('.slide-loader')?.remove();
+            canvasContainer.appendChild(canvas);
+            
+            const overlay = document.createElement('div');
+            overlay.className = 'protection-overlay';
+            canvasContainer.appendChild(overlay);
+            
+            slide.appendChild(canvasContainer);
+        };
+        img.src = slideUrl;
+    }
+
+    async function loadMobileSlides() {
+        const slides = swiperWrapper.querySelectorAll('.swiper-slide');
+        for (let i = 0; i < slides.length; i++) {
+            // Pequeno delay entre carregamentos para não travar a UI
+            await new Promise(r => setTimeout(r, 100));
+            loadSlideCanvas(i);
         }
     }
 
