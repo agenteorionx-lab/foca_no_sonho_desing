@@ -26,22 +26,43 @@
             <img src="imagens/focanosonhologo_branco.png" alt="Foca no Sonho Logo" class="brand-logo">
         </div>
 
-        <div class="search-bar">
-            <span class="material-symbols-outlined search-icon">search</span>
-            <input type="text" id="searchInput" placeholder="Pesquisar projetos, estilos...">
+        <div class="search-container">
+            <div class="search-bar">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" id="searchInput" placeholder="Pesquisar projetos, estilos...">
+            </div>
+            
+            <button id="filterToggle" class="filter-toggle-btn">
+                <span class="material-symbols-outlined">tune</span>
+                Filtros
+            </button>
         </div>
 
-        <div class="nav-toggle">
-            <button class="nav-btn active" data-category="mascote">Mascotes</button>
-            <button class="nav-btn" data-category="identidade">Identidade Visual</button>
+        <!-- Overlay de Filtros (Categorias) -->
+        <div class="filter-overlay" id="filterOverlay">
+            <div class="filter-content">
+                <div class="filter-header">
+                    <h3>Categorias</h3>
+                    <button id="closeFilters" class="close-filters-btn">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <div class="nav-toggle" id="categoryGrid">
+                    <!-- Botões serão gerados dinamicamente via JS -->
+                </div>
+            </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="main-content">
-        <!-- Renderização dinâmica dos cards via JS -->
-        <div class="grid-container" id="gridContainer">
-            <!-- Cards entrarão aqui -->
+    <main class="main-content container">
+        <header class="section-header">
+            <h1 class="main-title">Catálogo de Projetos</h1>
+            <p class="section-subtitle">Explore nossa galeria de identidades visuais e apresentações premium</p>
+        </header>
+
+        <div id="gridContainer" class="grid">
+            <!-- Os cards serão inseridos aqui via JS -->
         </div>
         
         <!-- Estado de "Nenhum resultado" vazio -->
@@ -51,13 +72,63 @@
         </div>
     </main>
 
+    <!-- ===== LGPD BANNER ===== -->
+    <section class="lgpd-banner">
+        <div class="container lgpd-banner-inner">
+            <div class="lgpd-icon">
+                <span class="material-symbols-outlined">shield</span>
+            </div>
+            <div class="lgpd-text">
+                <strong>Proteção de Dados Garantida — Lei n.º 13.709/2018 (LGPD)</strong>
+                <p>Este catálogo está em conformidade com a Lei Geral de Proteção de Dados Pessoais. Nenhuma informação do visitante é coletada, armazenada ou compartilhada sem consentimento expresso. Os projetos exibidos são protegidos por direitos autorais e propriedade intelectual.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <img src="imagens/focanosonhologo_branco.png" alt="Foca no Sonho" class="footer-logo">
+                <p class="footer-desc">Transformando visões em identidades visuais de alto impacto. Especialistas em branding e apresentações premium.</p>
+                <p class="footer-cnpj">Blumenau/SC &nbsp;&bull;&nbsp; CNPJ 29.875.189/0001-48</p>
+            </div>
+            
+            <div class="footer-nav">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="politica-privacidade.html" target="_blank">Políticas de Privacidade</a></li>
+                    <li><a href="termos-de-uso.html" target="_blank">Termos de Uso</a></li>
+                    <li><a href="direitos-autorais.html" target="_blank">Direitos Autorais</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-contact">
+                <h4>Contato</h4>
+                <ul>
+                    <li><a href="mailto:contato@focanosonho.com">contato@focanosonho.com</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="copyright">
+                    &copy; 2025 Foca no Sonho Design. Todos os direitos reservados.<br>
+                    Proibida a reprodução total ou parcial dos projetos aqui apresentados sem autorização prévia e por escrito.
+                </p>
+            </div>
+        </div>
+    </footer>
+
     <!-- Modal Slider (Popup) -->
     <div class="modal-overlay" id="modalOverlay">
+        <button class="modal-close" id="modalClose">
+            <span class="material-symbols-outlined">close</span>
+        </button>
         <div class="modal-container">
-            <button class="modal-close" id="modalClose">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-            
             <div class="modal-content">
                 <div class="modal-header">
                     <h2 id="modalTitle">Nome do Projeto</h2>
