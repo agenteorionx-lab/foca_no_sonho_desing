@@ -79,8 +79,31 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === filterOverlay) closeFilterOverlay();
     });
 
+    // 6. Deep Linking (Abrir projeto via URL)
+    function handleDeepLinking() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectTitle = urlParams.get('projeto');
+        const projectId = urlParams.get('id');
+
+        if (projectTitle || projectId) {
+            const project = projectsData.find(p => 
+                (projectId && p.id == projectId) || 
+                (projectTitle && p.title.toLowerCase() === projectTitle.toLowerCase())
+            );
+
+            if (project) {
+                // Pequeno delay para garantir que o DOM e Swiper estejam prontos
+                setTimeout(() => {
+                    openModal(project);
+                }, 500);
+            }
+        }
+    }
+
+    // Inicialização
     initCategories();
     renderGrid();
+    handleDeepLinking();
 
     // 2. Lógica de Busca em tempo real
     searchInput.addEventListener('input', (e) => {
